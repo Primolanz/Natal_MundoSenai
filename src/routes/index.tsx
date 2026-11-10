@@ -43,8 +43,9 @@ function Experience() {
   useEffect(() => {
     load();
     const channel = supabase
-      .channel(`tree-messages-${Math.random().toString(36).slice(2)}`)
+      .channel("realtime-messages")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, (payload) => {
+        console.log("Novo enfeite recebido:", payload.new);
         const message = mapMessageRow(payload.new as Record<string, unknown>);
         if (!isActive(message)) return;
         setMessages((current) => {
@@ -60,7 +61,10 @@ function Experience() {
           load();
         }
       })
-      .subscribe();
+      .subscribe((status) => {
+        console.log("Status do Supabase Realtime:", status);
+        if (status === "SUBSCRIBED") load();
+      });
     const iv = window.setInterval(load, 30000);
     return () => {
       clearInterval(iv);
