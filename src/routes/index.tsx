@@ -5,7 +5,8 @@ import { ChristmasScene } from "@/scene/ChristmasScene";
 import { Composer, DEFAULT_DRAFT, type Draft } from "@/components/Composer";
 import { NoteReader } from "@/components/NoteReader";
 import { MessageWall } from "@/components/MessageWall";
-import { fetchActiveMessages, isActive, publishMessage, type NewMessage, type TreeMessage } from "@/lib/messages";
+import { fetchActiveMessages, isActive, mapMessageRow, publishMessage, type NewMessage, type TreeMessage } from "@/lib/messages";
+import { supabase } from "@/lib/supabase";
 import { music } from "@/lib/music";
 import senaiLogo from "@/assets/senai_logo.webp.asset.json";
 
@@ -41,9 +42,29 @@ function Experience() {
 
   useEffect(() => {
     load();
+    const channel = supabase
+      .channel(`tree-messages-${Math.random().toString(36).slice(2)}`)
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, (payload) => {
+        const message = mapMessageRow(payload.new as Record<string, unknown>);
+        if (!isActive(message)) return;
+        setMessages((current) => {
+          const updated = [...current.filter((item) => item.id !== message.id), message];
+          return updated.sort((a, b) => (a.created_at ?? "").localeCompare(b.created_at ?? ""));
+        });
+      })
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "messages" }, (payload) => {
+        const deletedId = payload.old["id"];
+        if (typeof deletedId === "string") {
+          setMessages((current) => current.filter((message) => message.id !== deletedId));
+        } else {
+          load();
+        }
+      })
+      .subscribe();
     const iv = window.setInterval(load, 30000);
     return () => {
       clearInterval(iv);
+      void supabase.removeChannel(channel);
     };
   }, [load]);
 

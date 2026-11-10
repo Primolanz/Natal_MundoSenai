@@ -36,7 +36,7 @@ const FALLBACKS = {
   tree_angular_position: 0,
 };
 
-function fromRow(row: Record<string, unknown>): TreeMessage {
+export function mapMessageRow(row: Record<string, unknown>): TreeMessage {
   const createdAt = typeof row["created_at"] === "string" ? row["created_at"] : new Date().toISOString();
   return {
     ...FALLBACKS,
@@ -66,7 +66,7 @@ export async function fetchActiveMessages(): Promise<TreeMessage[]> {
     .order("created_at", { ascending: true })
     .limit(400);
   if (error) throw error;
-  return (data ?? []).map((row) => fromRow(row as Record<string, unknown>));
+  return (data ?? []).map((row) => mapMessageRow(row as Record<string, unknown>));
 }
 
 export async function fetchMessageHistory(): Promise<TreeMessage[]> {
@@ -83,7 +83,7 @@ export async function fetchMessageHistory(): Promise<TreeMessage[]> {
     rows.push(...page);
     if (page.length < pageSize) break;
   }
-  return rows.map(fromRow);
+  return rows.map(mapMessageRow);
 }
 
 export function validateMessage(text: string): string | null {
@@ -119,7 +119,7 @@ export async function publishMessage(m: NewMessage): Promise<TreeMessage> {
     .select("*")
     .single();
   if (error) throw error;
-  const saved = fromRow(data as Record<string, unknown>);
+  const saved = mapMessageRow(data as Record<string, unknown>);
   return { ...saved, ...m, id: saved.id, author: m.author ?? saved.author ?? "Anônimo", expires_at: saved.expires_at, message: saved.message };
 }
 
