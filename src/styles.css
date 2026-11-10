@@ -1,0 +1,123 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Karla", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-pine: var(--pine);
+  --color-glass: var(--glass);
+  --color-glass-foreground: var(--glass-foreground);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+}
+
+:root {
+  --radius: 1rem;
+  --background: oklch(0.18 0.03 260);
+  --foreground: oklch(0.96 0.02 85);
+  --card: oklch(0.97 0.02 85);
+  --card-foreground: oklch(0.25 0.04 40);
+  --popover: oklch(0.97 0.02 85);
+  --popover-foreground: oklch(0.25 0.04 40);
+  --primary: oklch(0.48 0.17 25);
+  --primary-foreground: oklch(0.98 0.015 85);
+  --secondary: oklch(0.36 0.07 155);
+  --secondary-foreground: oklch(0.97 0.02 85);
+  --muted: oklch(0.92 0.025 85);
+  --muted-foreground: oklch(0.48 0.04 50);
+  --accent: oklch(0.8 0.13 80);
+  --accent-foreground: oklch(0.25 0.04 40);
+  --destructive: oklch(0.58 0.22 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.85 0.03 80);
+  --input: oklch(0.85 0.03 80);
+  --ring: oklch(0.8 0.13 80);
+  --gold: oklch(0.8 0.13 80);
+  --pine: oklch(0.36 0.07 155);
+  --glass: oklch(0.2 0.03 40 / 0.55);
+  --glass-foreground: oklch(0.97 0.02 85);
+  --ink: oklch(0.22 0.03 40);
+  --paper: oklch(0.98 0.015 85);
+  --shadow-glow: 0 10px 40px -10px oklch(0.8 0.13 80 / 0.5);
+  --gradient-warm: radial-gradient(ellipse at 50% 30%, oklch(0.35 0.08 50 / 0.35), oklch(0.12 0.03 260 / 0.85));
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body { height: 100%; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overscroll-behavior: none;
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--glass);
+    color: var(--glass-foreground);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid oklch(1 0 0 / 0.12);
+    box-shadow: 0 20px 60px -20px oklch(0 0 0 / 0.6);
+  }
+  .paper-panel {
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 30px 80px -20px oklch(0 0 0 / 0.6);
+  }
+  .home-veil { background: var(--gradient-warm); }
+  .btn-festive {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-all;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-festive:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .btn-festive:disabled { opacity: 0.6; transform: none; }
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-all;
+    border: 1px solid oklch(1 0 0 / 0.35);
+    color: var(--glass-foreground);
+    background: oklch(1 0 0 / 0.06);
+  }
+  .btn-ghost-light:hover { background: oklch(1 0 0 / 0.14); }
+  .chip {
+    @apply rounded-full border px-3 py-1.5 text-sm transition-colors;
+    border-color: var(--border);
+  }
+  .chip[data-active="true"] { background: var(--secondary); color: var(--secondary-foreground); border-color: var(--secondary); }
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.animate-rise { animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes shimmer { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+.animate-shimmer { animation: shimmer 3s ease-in-out infinite; }
