@@ -4,8 +4,8 @@ import { Volume2, VolumeX, PenLine, Home } from "lucide-react";
 import { ChristmasScene } from "@/scene/ChristmasScene";
 import { Composer, DEFAULT_DRAFT, type Draft } from "@/components/Composer";
 import { NoteReader } from "@/components/NoteReader";
+import { MessageWall } from "@/components/MessageWall";
 import { fetchActiveMessages, isActive, publishMessage, type NewMessage, type TreeMessage } from "@/lib/messages";
-import { supabase } from "@/integrations/supabase/client";
 import { music } from "@/lib/music";
 import senaiLogo from "@/assets/senai_logo.webp.asset.json";
 
@@ -41,13 +41,8 @@ function Experience() {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel(`tree-${Math.random().toString(36).slice(2)}`)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "tree_messages" }, load)
-      .subscribe();
-    const iv = window.setInterval(() => setMessages((ms) => ms.filter((m) => isActive(m))), 20000);
+    const iv = window.setInterval(load, 30000);
     return () => {
-      supabase.removeChannel(ch);
       clearInterval(iv);
     };
   }, [load]);
@@ -82,6 +77,7 @@ function Experience() {
       <ChristmasScene messages={messages} onPick={pick} selectedId={reading?.id} ghost={ghost} />
 
       <div className="pointer-events-none absolute inset-0">
+        <MessageWall />
         {mode === "home" && (
           <div className="home-veil pointer-events-auto absolute inset-0 flex items-center justify-center p-6">
             <div className="animate-rise max-w-xl text-center">

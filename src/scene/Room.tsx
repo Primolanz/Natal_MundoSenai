@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
-import { SenaiStudent } from "./Senai";
+import { Santa, SenaiStudent, SenaiWallBadge } from "./Senai";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { brickTexture, fluffTexture, noiseTexture, paintingTexture, parquetTexture } from "./textures";
@@ -102,6 +102,8 @@ export function Room() {
       <GeoShelf />
       <SideCabinet />
       <Painting map={t.painting} />
+      <SenaiWallBadge position={[-ROOM + 0.04, 3.25, -1.9]} rotationY={Math.PI / 2} />
+      <Santa position={[5.55, 0, -6.25]} />
       <Plant p={[-7.2, 0, -7.2]} s={1.2} />
       <Plant p={[7.2, 0, 7.2]} s={1} />
       <Plant p={[-7.2, 0, 7.2]} s={0.9} />

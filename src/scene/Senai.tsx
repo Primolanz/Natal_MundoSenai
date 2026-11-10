@@ -42,6 +42,75 @@ export function StarSenaiBadge() {
   );
 }
 
+/** Compact framed SENAI sign for the room wall, facing the room interior. */
+export function SenaiWallBadge({ position, rotationY }: { position: [number, number, number]; rotationY: number }) {
+  const logo = useSenaiLogo();
+  return (
+    <group position={position} rotation-y={rotationY}>
+      <mesh castShadow>
+        <boxGeometry args={[1.35, 0.82, 0.1]} />
+        <meshStandardMaterial color="#9a6b32" metalness={0.62} roughness={0.34} />
+      </mesh>
+      <mesh position-z={0.055}>
+        <planeGeometry args={[1.22, 0.69]} />
+        <meshStandardMaterial color="#f5eddc" roughness={0.85} />
+      </mesh>
+      {logo && (
+        <mesh position={[0, 0, 0.061]}>
+          <planeGeometry args={[0.94, 0.24]} />
+          <meshBasicMaterial map={logo} toneMapped={false} />
+        </mesh>
+      )}
+      <mesh position={[0, -0.23, 0.062]}>
+        <boxGeometry args={[0.48, 0.018, 0.012]} />
+        <meshStandardMaterial color="#a3201d" metalness={0.35} roughness={0.4} />
+      </mesh>
+    </group>
+  );
+}
+
+/** Static, softly rounded Santa assembled from lightweight procedural meshes. */
+export function Santa({ position = [5.55, 0, -6.25] }: { position?: [number, number, number] }) {
+  return (
+    <group position={position} scale={1.08}>
+      {/* Rounded boots and legs; the soles sit directly on the floor. */}
+      <mesh position={[-0.13, 0.105, 0.09]} scale={[1, 0.62, 1.35]} castShadow><sphereGeometry args={[0.16, 24, 18]} /><meshStandardMaterial color="#28201d" roughness={0.54} /></mesh>
+      <mesh position={[0.13, 0.105, 0.09]} scale={[1, 0.62, 1.35]} castShadow><sphereGeometry args={[0.16, 24, 18]} /><meshStandardMaterial color="#28201d" roughness={0.54} /></mesh>
+      <mesh position={[-0.13, 0.41, 0]} castShadow><capsuleGeometry args={[0.125, 0.34, 8, 20]} /><meshStandardMaterial color="#941b20" roughness={0.74} /></mesh>
+      <mesh position={[0.13, 0.41, 0]} castShadow><capsuleGeometry args={[0.125, 0.34, 8, 20]} /><meshStandardMaterial color="#941b20" roughness={0.74} /></mesh>
+      {/* A soft, pear-shaped coat with a fur hem and rounded belt. */}
+      <mesh position={[0, 0.98, 0]} scale={[0.39, 0.58, 0.3]} castShadow><sphereGeometry args={[1, 32, 24]} /><meshStandardMaterial color="#bd2026" roughness={0.72} /></mesh>
+      <mesh position={[0, 0.67, 0]} rotation-x={Math.PI / 2}><torusGeometry args={[0.28, 0.045, 12, 32]} /><meshStandardMaterial color="#211d1b" roughness={0.56} /></mesh>
+      <mesh position={[0, 0.67, 0.29]}><boxGeometry args={[0.14, 0.16, 0.055, 3, 3, 2]} /><meshStandardMaterial color="#d8ad58" metalness={0.55} roughness={0.32} /></mesh>
+      <mesh position={[0, 0.43, 0.12]} scale={[0.78, 0.24, 0.36]}><sphereGeometry args={[0.3, 24, 16]} /><meshStandardMaterial color="#f6eee0" roughness={0.96} /></mesh>
+      {/* Sleeves, fluffy cuffs and mittens. */}
+      <mesh position={[-0.4, 0.94, 0.01]} rotation-z={-0.52} castShadow><capsuleGeometry args={[0.13, 0.4, 8, 20]} /><meshStandardMaterial color="#bd2026" roughness={0.72} /></mesh>
+      <mesh position={[0.4, 0.94, 0.01]} rotation-z={0.52} castShadow><capsuleGeometry args={[0.13, 0.4, 8, 20]} /><meshStandardMaterial color="#bd2026" roughness={0.72} /></mesh>
+      <mesh position={[-0.54, 0.67, 0.04]} rotation-z={-0.52}><torusGeometry args={[0.105, 0.035, 10, 20]} /><meshStandardMaterial color="#f6eee0" roughness={0.96} /></mesh>
+      <mesh position={[0.54, 0.67, 0.04]} rotation-z={0.52}><torusGeometry args={[0.105, 0.035, 10, 20]} /><meshStandardMaterial color="#f6eee0" roughness={0.96} /></mesh>
+      <mesh position={[-0.56, 0.52, 0.08]}><sphereGeometry args={[0.12, 24, 18]} /><meshStandardMaterial color="#d19370" roughness={0.82} /></mesh>
+      <mesh position={[0.56, 0.52, 0.08]}><sphereGeometry args={[0.12, 24, 18]} /><meshStandardMaterial color="#d19370" roughness={0.82} /></mesh>
+      {/* Face framed by a layered beard and soft moustache. */}
+      <mesh position={[0, 1.54, 0.015]} scale={[0.28, 0.31, 0.25]} castShadow><sphereGeometry args={[1, 32, 24]} /><meshStandardMaterial color="#d69a73" roughness={0.78} /></mesh>
+      <mesh position={[0, 1.36, 0.12]} scale={[0.29, 0.28, 0.22]}><sphereGeometry args={[1, 32, 24]} /><meshStandardMaterial color="#f7f1e7" roughness={0.98} /></mesh>
+      <mesh position={[-0.17, 1.37, 0.19]} scale={[0.13, 0.17, 0.14]}><sphereGeometry args={[1, 20, 16]} /><meshStandardMaterial color="#fffaf0" roughness={1} /></mesh>
+      <mesh position={[0.17, 1.37, 0.19]} scale={[0.13, 0.17, 0.14]}><sphereGeometry args={[1, 20, 16]} /><meshStandardMaterial color="#fffaf0" roughness={1} /></mesh>
+      <mesh position={[-0.08, 1.58, 0.245]}><sphereGeometry args={[0.027, 16, 12]} /><meshBasicMaterial color="#281c19" /></mesh>
+      <mesh position={[0.08, 1.58, 0.245]}><sphereGeometry args={[0.027, 16, 12]} /><meshBasicMaterial color="#281c19" /></mesh>
+      <mesh position={[0, 1.49, 0.28]}><sphereGeometry args={[0.06, 20, 16]} /><meshStandardMaterial color="#d78268" roughness={0.7} /></mesh>
+      <mesh position={[-0.105, 1.44, 0.285]} rotation-z={-0.16} scale={[1.15, 0.55, 0.7]}><sphereGeometry args={[0.12, 24, 18]} /><meshStandardMaterial color="#fffaf0" roughness={0.98} /></mesh>
+      <mesh position={[0.105, 1.44, 0.285]} rotation-z={0.16} scale={[1.15, 0.55, 0.7]}><sphereGeometry args={[0.12, 24, 18]} /><meshStandardMaterial color="#fffaf0" roughness={0.98} /></mesh>
+      {/* Curved cap, plush brim and pom-pom. */}
+      <mesh position={[0, 1.78, -0.015]} rotation-z={-0.14} castShadow><coneGeometry args={[0.25, 0.46, 24, 4]} /><meshStandardMaterial color="#b91f25" roughness={0.72} /></mesh>
+      <mesh position={[0, 1.65, 0]}><torusGeometry args={[0.22, 0.065, 14, 32]} /><meshStandardMaterial color="#fffaf0" roughness={0.98} /></mesh>
+      <mesh position={[-0.06, 2.015, -0.07]}><sphereGeometry args={[0.078, 24, 18]} /><meshStandardMaterial color="#fffaf0" roughness={0.98} /></mesh>
+      {/* Rounded gift sack resting behind the shoulder. */}
+      <mesh position={[-0.4, 1.26, -0.16]} rotation-z={-0.15} scale={[1, 1.15, 0.9]} castShadow><sphereGeometry args={[0.3, 24, 18]} /><meshStandardMaterial color="#31583e" roughness={0.9} /></mesh>
+      <mesh position={[-0.4, 1.53, -0.15]}><torusGeometry args={[0.13, 0.035, 10, 24]} /><meshStandardMaterial color="#d0a14b" metalness={0.4} roughness={0.44} /></mesh>
+    </group>
+  );
+}
+
 const RED = "#d01818";
 const WHITE = "#f3f3f3";
 const SKIN = "#c98d63";

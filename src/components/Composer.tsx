@@ -118,6 +118,7 @@ export function Composer({ draft, setDraft, onClose, onPublish }: { draft: Draft
     try {
       await onPublish({ ...draft });
     } catch (e) {
+      console.error("Erro ao enviar mensagem para o Supabase:", e);
       setError(e instanceof Error ? e.message : "Não foi possível publicar agora. Tente de novo.");
     } finally {
       setBusy(false);
